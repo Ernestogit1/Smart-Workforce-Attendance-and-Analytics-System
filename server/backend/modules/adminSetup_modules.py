@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 import os
 from firebase_admin import auth
-from database.models.employee_model import Employee  # was backend.database...
+from database.models.employee_model import Employee  
 
 _ran = False
 
@@ -35,7 +35,7 @@ def ensure_admin_exists():
             suffixes=None,
             email=email,
             firebaseUid=user.uid,
-            password="firebase-manage",  # Firebase manages password
+            password="firebase-manage",  
             address="Admin Address",
             birthDate=datetime(1990, 1, 1),
             age=30,

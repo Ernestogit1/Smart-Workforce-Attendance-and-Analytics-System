@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import make_password
 import datetime
 
 class Employee(Document):
-    meta = {"collection": "employees"}  # reuse your existing collection
+    meta = {"collection": "employees"}  
 
     lastName = StringField(required=True, max_length=100)
     firstName = StringField(required=True, max_length=100)
@@ -28,7 +28,6 @@ class Employee(Document):
     updated_at = DateTimeField(default=datetime.datetime.utcnow)
 
     def clean(self):
-        # skip hashing when using Firebase-managed marker
         if self.password and self.password != "firebase-manage" and not str(self.password).startswith("pbkdf2_"):
             self.password = make_password(self.password)
 
