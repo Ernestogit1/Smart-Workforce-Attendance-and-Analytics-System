@@ -1,4 +1,4 @@
-import { initializeApp, deleteApp, type FirebaseApp } from 'firebase/app'
+import { initializeApp,  type FirebaseApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
 
 const firebaseConfig = {

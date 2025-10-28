@@ -41,6 +41,7 @@ def ensure_admin_exists():
             age=30,
             profileImage=None,
             contactNumber="0000000000",
+            isRestricted=False,
             isAdmin=True,
         )
         new_admin.save()

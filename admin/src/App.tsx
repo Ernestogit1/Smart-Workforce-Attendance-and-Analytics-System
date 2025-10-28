@@ -1,10 +1,11 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import LoginScreen from './screens/auth/login.screen'
-import DashboardScreen from './screens/home/dashboard.screen'
 import ProtectedRoute from './components/protectedRoute.component'
 import SidebarLayout from './components/layouts/sidebar.layout'
+import LoginScreen from './screens/auth/login.screen'
+import DashboardScreen from './screens/home/dashboard.screen'
 import EmloyeeAccMakerScreen from './screens/home/employeeAccMaker.screen'
 import EmployeeDataTableScreen from './screens/home/employeeDataTable.screen'
+import EmployeeUpdateScreen from './screens/home/employeeUpdate.screen'
 
 function App() {
   return (
@@ -15,11 +16,11 @@ function App() {
           <Route index element={<DashboardScreen />} />
           <Route path="employee-acc-maker" element={<EmloyeeAccMakerScreen />} />
           <Route path="employees" element={<EmployeeDataTableScreen />} />
+          <Route path="employees/:id/update" element={<EmployeeUpdateScreen />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
 }
-
 export default App

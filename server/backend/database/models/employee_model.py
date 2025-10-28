@@ -22,6 +22,7 @@ class Employee(Document):
     age = IntField()
 
     profileImage = URLField(null=True)
+    isRestricted = BooleanField(default=False)
     isAdmin = BooleanField(default=False)
 
     created_at = DateTimeField(default=datetime.datetime.utcnow)

@@ -21,16 +21,14 @@ export const registerEmployee = createAsyncThunk<
   NewEmployeePayload,
   { rejectValue: string }
 >('employee/register', async (payload, { rejectWithValue }) => {
-  const { email, password, ...rest } = payload
+  const { email, password, profileImageFile, ...rest } = payload
   const secondaryAuth = getSecondaryAuth()
   try {
-    // Create Firebase user on secondary auth instance
     const cred = await createUserWithEmailAndPassword(secondaryAuth, email, password)
-
-    // Send non-password fields to backend (password saved as "firebase-manage")
     const employee = await createEmployeeRecord({
       firebaseUid: cred.user.uid,
       email,
+      profileImageFile: profileImageFile || null,
       ...rest,
     })
     return employee
