@@ -8,12 +8,9 @@ def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
 
-    # Default to `runserver 5174` when no command is provided,
-    # and add 5174 if `runserver` has no port.
+    # Remove the forced 5174 port. Optionally default to 8000:
     if len(sys.argv) == 1:
-        sys.argv += ["runserver", "127.0.0.1:5174"]
-    elif len(sys.argv) == 2 and sys.argv[1] == "runserver":
-        sys.argv.append("127.0.0.1:5174")
+        sys.argv += ["runserver", "127.0.0.1:8000"]
 
     try:
         from django.core.management import execute_from_command_line
