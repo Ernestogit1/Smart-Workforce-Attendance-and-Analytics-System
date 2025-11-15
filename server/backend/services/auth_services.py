@@ -24,7 +24,6 @@ def get_or_create_employee_from_firebase(decoded: Dict[str, Any]) -> Employee:
 
     emp = Employee.objects(firebaseUid=uid).first()
     if emp:
-        # Optionally sync name/email/photo if changed
         if email and emp.email != email:
             emp.email = email
         if picture and emp.profileImage != picture:

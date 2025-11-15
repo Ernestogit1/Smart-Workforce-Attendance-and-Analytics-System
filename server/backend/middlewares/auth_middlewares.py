@@ -9,7 +9,6 @@ def require_firebase_auth(view_func):
     """
     @wraps(view_func)
     def _wrapped(request, *args, **kwargs):
-        # Let CORS preflight through
         if request.method == "OPTIONS":
             return JsonResponse({"ok": True})
         auth_header = request.headers.get("Authorization", "")
@@ -29,7 +28,6 @@ def require_firebase_auth(view_func):
             request.firebase = decoded
             request.employee = employee
         except Exception as ex:
-            # Keep your debug print if you want
             print("Auth middleware rejected token:", ex)
             return JsonResponse({"detail": "Invalid or expired token."}, status=401)
 

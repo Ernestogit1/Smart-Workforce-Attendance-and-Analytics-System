@@ -12,7 +12,6 @@ export const useEmployeeAuth = () => {
   const state = useSelector((s: RootState) => s.auth)
 
   useEffect(() => {
-    // bootstrap from storage -> fetch profile
     if (getStoredToken() && !state.user) {
       dispatch(meThunk())
     }
@@ -20,7 +19,6 @@ export const useEmployeeAuth = () => {
       if (!u) {
         dispatch(setAuth({ user: null, token: null }))
       } else {
-        // token refresh handled by api/auth.ts; keep UI in sync
         dispatch(setAuth({ user: getStoredUser(), token: getStoredToken() }))
       }
     })

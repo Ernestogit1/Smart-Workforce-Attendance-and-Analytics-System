@@ -38,13 +38,11 @@ def create_employee_service(payload: Dict[str, Any]) -> Employee:
     contact_number = payload.get("contactNumber") or None
     address = payload.get("address") or None
     birth_date = _parse_birth_date(payload.get("birthDate"))
-    # Coerce age if it comes as string
     age_raw = payload.get("age")
     try:
         age = int(age_raw) if age_raw not in (None, "",) else None
     except Exception:
         age = None
-    # Proper boolean parsing for isAdmin
     is_admin = _to_bool(payload.get("isAdmin"), default=False)
     profile_image_url = payload.get("profileImage") or None
 

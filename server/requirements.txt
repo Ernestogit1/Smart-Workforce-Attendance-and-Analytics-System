@@ -11,3 +11,4 @@ PyJWT
 mongoengine
 pymongo
 dnspython
+blinker
