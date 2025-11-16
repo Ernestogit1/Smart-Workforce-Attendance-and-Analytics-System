@@ -1,11 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer from './slices/auth.slice'
 import { attendanceReducer } from './slices/attendance.slice'
+import { leaveReducer } from './slices/leaveRequeast.slice'
+import { attendanceHistoryReducer } from './slices/attendanceHistory.slice'
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    attendance: attendanceReducer, // added
+    attendance: attendanceReducer,
+    leave: leaveReducer,
+    attendanceHistory: attendanceHistoryReducer,
   },
 })
 

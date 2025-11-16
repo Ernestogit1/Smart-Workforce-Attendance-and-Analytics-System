@@ -7,19 +7,28 @@ import {
   Timer as TimerIcon,
   CheckCircle as CheckCircleIcon,
 } from '@mui/icons-material'
+import LeaveRequeastModal from '../ui/modals/leaveRequest.modal'
+import LeaveRequeastButton from '../ui/buttons/leaveRequeast.button'
+import { useState } from 'react'
 
 export default function Home() {
   const { user } = useSelector((s: RootState) => s.auth)
   const { attendance } = useAttendance()
+  const [leaveOpen, setLeaveOpen] = useState(false)
 
   return (
     <Box>
-      <Typography variant="h4" sx={{ fontWeight: 800, mb: 1, color: '#1e293b' }}>
-        Welcome back, {user?.displayName || 'Employee'}!
-      </Typography>
-      <Typography variant="body1" sx={{ color: '#64748b', mb: 4 }}>
-        Track your attendance and manage your work hours
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+        <Box>
+          <Typography variant="h4" sx={{ fontWeight: 800, mb: 1, color: '#1e293b' }}>
+            Welcome back, {user?.displayName || 'Employee'}!
+          </Typography>
+          <Typography variant="body1" sx={{ color: '#64748b' }}>
+            Track your attendance and manage your work hours
+          </Typography>
+        </Box>
+        <LeaveRequeastButton onClick={() => setLeaveOpen(true)} />
+      </Box>
 
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
@@ -110,6 +119,8 @@ export default function Home() {
           </Card>
         </Grid>
       </Grid>
+
+      <LeaveRequeastModal open={leaveOpen} onClose={() => setLeaveOpen(false)} />
     </Box>
   )
 }

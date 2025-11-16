@@ -25,3 +25,19 @@ export async function apiTimeOut(token: string) {
   if (!res.ok) throw new Error('Failed to time out')
   return res.json()
 }
+
+export async function apiGetAttendanceHistory(
+  token: string,
+  opts?: { limit?: number; start?: string; end?: string }
+) {
+  const params = new URLSearchParams()
+  if (opts?.limit) params.set('limit', String(opts.limit))
+  if (opts?.start) params.set('start', opts.start) // YYYY-MM-DD
+  if (opts?.end) params.set('end', opts.end)       // YYYY-MM-DD
+
+  const res = await fetch(`${BASE_URL}/attendance/history?${params.toString()}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  if (!res.ok) throw new Error('Failed to fetch attendance history')
+  return res.json() // { items: Attendance[] }
+}

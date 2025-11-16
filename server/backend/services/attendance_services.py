@@ -1,5 +1,5 @@
 from datetime import datetime, date, time
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from database.models.attendance_model import Attendance
 from database.models.employee_model import Employee
 
@@ -74,3 +74,14 @@ def time_out(employee: Employee) -> Attendance:
     att.hoursWorked = _to_hms_from_seconds(int(delta.total_seconds()))
     att.save()
     return att
+
+def list_attendance(employee: Employee, start: Optional[date] = None, end: Optional[date] = None, limit: int = 50) -> List[Attendance]:
+    q = Attendance.objects(employee=employee)
+    if start:
+        q = q.filter(date__gte=start)
+    if end:
+        q = q.filter(date__lte=end)
+    q = q.order_by("-date")
+    if limit and limit > 0:
+        q = q[:limit]
+    return list(q)
