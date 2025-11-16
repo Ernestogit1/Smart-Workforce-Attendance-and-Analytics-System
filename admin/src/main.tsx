@@ -6,7 +6,7 @@ import { store } from './store/index.store'
 import { BrowserRouter } from 'react-router-dom'
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material'
 import { setAuthToken } from './api/auth'
-
+import './index.css'
 
 const theme = createTheme({
   palette: {
@@ -30,7 +30,7 @@ const theme = createTheme({
     info: { main: '#47a3ff' }, // sky blue
   },
   typography: {
-    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    fontFamily: "'Nunito', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif",
     h1: { fontWeight: 700 },
     h2: { fontWeight: 700 },
     h3: { fontWeight: 700 },
