@@ -7,6 +7,7 @@ import LoginScreen from './screens/auth/login.screens'
 import HomeScreen from './screens/home/home.screen'
 import LeaveDetailScreen from './screens/home/leaveDetail.screen'
 import AttendanceHistoryScreen from './screens/home/attendancehistory.screen'
+import EmployeeReportScreen from './screens/home/employeeReport.screen'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<HomeScreen />} />
         <Route path="/leave-details" element={<LeaveDetailScreen />} />
         <Route path="/attendance-history" element={<AttendanceHistoryScreen />} />
+        <Route path="/employee-report" element={<EmployeeReportScreen />} /> {/* added */}
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

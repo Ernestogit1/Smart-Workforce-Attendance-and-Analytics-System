@@ -76,7 +76,7 @@ export default function Sidebar() {
     { text: 'Time Out', icon: <AccessTimeIcon />, action: handleTimeOutClick },
     { text: 'Leave Requests', icon: <BeachAccessIcon />, action: () => navigate('/leave-details') },
     { text: 'Attendance History', icon: <HistoryIcon />, action: () => navigate('/attendance-history') },
-    { text: 'Reports', icon: <AssessmentIcon />, action: () => {} },
+    { text: 'Reports', icon: <AssessmentIcon />, action: () => navigate('/employee-report') }, // updated
   ]
 
   // Get profile image from user object (photoURL from Firebase or profileImage from backend)
