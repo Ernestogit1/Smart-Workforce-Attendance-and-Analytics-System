@@ -21,6 +21,9 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useAuth } from '../../../hooks/auth.hook'
 import { useState } from 'react'
+import QueryStatsIcon from '@mui/icons-material/QueryStats'
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'
+import InsightsIcon from '@mui/icons-material/Insights'
 
 const drawerWidth = 260
 
@@ -34,6 +37,9 @@ export default function SidebarLayout() {
     () => [
       { to: '/dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
       { to: '/dashboard/employee-acc-maker', label: 'Employee Account Maker', icon: <PersonAddIcon /> },
+      { to: '/dashboard/monitor-attendance', label: 'Monitor Attendance', icon: <QueryStatsIcon /> },
+      { to: '/dashboard/leave-requests', label: 'Leave Management', icon: <AssignmentTurnedInIcon /> },
+      { to: '/dashboard/analytics', label: 'Analytics', icon: <InsightsIcon /> }, // added
     ],
     []
   )

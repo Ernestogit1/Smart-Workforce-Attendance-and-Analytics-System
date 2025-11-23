@@ -50,10 +50,25 @@ def create_leave_request(emp: Employee, payload: Dict[str, Any]) -> LeaveRequeas
 def list_my_leave_requests(emp: Employee) -> List[LeaveRequeast]:
     return LeaveRequeast.objects(employee=emp).order_by("-created_at")
 
+def admin_list_pending_leaves() -> List[LeaveRequeast]:
+    return LeaveRequeast.objects(status="Pending").order_by("-created_at")
+
+def set_leave_status(leave_id: str, status: str) -> LeaveRequeast:
+    lr = LeaveRequeast.objects(id=leave_id).first()
+    if not lr:
+        raise ValueError("Leave request not found")
+    if status not in {"Approved", "Rejected"}:
+        raise ValueError("Invalid status")
+    lr.status = status
+    lr.updated_at = datetime.now()
+    lr.save()
+    return lr
+
 def serialize_leave(lr: LeaveRequeast) -> Dict[str, Any]:
     return {
         "id": str(lr.id),
         "employeeId": str(lr.employee.id) if lr.employee else None,
+        "employeeName": f"{lr.employee.firstName} {lr.employee.lastName}".strip() if lr.employee else None,
         "leave_type": lr.leaveType,
         "start_date": lr.startDate.isoformat() if lr.startDate else None,
         "end_date": lr.endDate.isoformat() if lr.endDate else None,

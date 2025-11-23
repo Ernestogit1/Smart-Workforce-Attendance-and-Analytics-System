@@ -21,24 +21,32 @@ export const setAuthToken = (token?: string | null) => {
   }
 }
 
-// Initialize axios with token from storage
 const saved = localStorage.getItem(TOKEN_KEY)
 if (saved) setAuthToken(saved)
 
 export type AuthUser = Pick<User, 'uid' | 'email' | 'displayName' | 'photoURL'>
 
 export async function loginWithEmail(email: string, password: string) {
-  const cred = await signInWithEmailAndPassword(auth, email, password)
-  const idToken = await cred.user.getIdToken(true)
+  try {
+    const cred = await signInWithEmailAndPassword(auth, email, password)
+    const idToken = await cred.user.getIdToken(true)
 
-  // Hit Django to verify + upsert employee, and echo user back
-  const res = await api.post('/auth/login', {}, { headers: { Authorization: `Bearer ${idToken}` } })
-  const token = res.data?.token || idToken
-  const user = res.data?.user as any
+    // Verify with backend
+    const res = await api.post('/auth/login', {}, { headers: { Authorization: `Bearer ${idToken}` } })
+    const token = res.data?.token || idToken
+    const user = res.data?.user as any
 
-  setAuthToken(token)
-  localStorage.setItem(USER_KEY, JSON.stringify(user))
-  return { user, token }
+    setAuthToken(token)
+    localStorage.setItem(USER_KEY, JSON.stringify(user))
+    return { user, token }
+  } catch (e: any) {
+    // If backend rejects (e.g., restricted), ensure we sign out and clear headers
+    try { await signOut(auth) } catch {}
+    setAuthToken(null)
+    localStorage.removeItem(USER_KEY)
+    const serverMsg = e?.response?.data?.detail
+    throw new Error(serverMsg || e?.message || 'Login failed')
+  }
 }
 
 export async function getMe() {
@@ -49,9 +57,7 @@ export async function getMe() {
 }
 
 export async function logoutFirebase() {
-  try {
-    await api.post('/auth/logout')
-  } catch {}
+  try { await api.post('/auth/logout') } catch {}
   await signOut(auth)
   setAuthToken(null)
   localStorage.removeItem(USER_KEY)
@@ -66,7 +72,6 @@ export function getStoredUser(): any | null {
   return raw ? JSON.parse(raw) : null
 }
 
-// Keep token fresh if Firebase rotates it
 onAuthStateChanged(auth, async (u) => {
   if (u) {
     const t = await u.getIdToken()

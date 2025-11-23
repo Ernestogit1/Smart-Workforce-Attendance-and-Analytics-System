@@ -6,6 +6,9 @@ import DashboardScreen from './screens/home/dashboard.screen'
 import EmloyeeAccMakerScreen from './screens/home/employeeAccMaker.screen'
 import EmployeeDataTableScreen from './screens/home/employeeDataTable.screen'
 import EmployeeUpdateScreen from './screens/home/employeeUpdate.screen'
+import MonitorAttendanceScreen from './screens/home/monitorAttendance.screen'
+import LeaveRequeastScreen from './screens/home/leavRequeast.screen'
+import AnalyticDashboardScreen from './screens/home/analythicDashboard.screen'
 
 function App() {
   return (
@@ -17,6 +20,9 @@ function App() {
           <Route path="employee-acc-maker" element={<EmloyeeAccMakerScreen />} />
           <Route path="employees" element={<EmployeeDataTableScreen />} />
           <Route path="employees/:id/update" element={<EmployeeUpdateScreen />} />
+          <Route path="monitor-attendance" element={<MonitorAttendanceScreen />} />
+          <Route path="leave-requests" element={<LeaveRequeastScreen />} />
+          <Route path="analytics" element={<AnalyticDashboardScreen />} /> {/* added */}
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

@@ -14,5 +14,7 @@ urlpatterns += [
     path('', include('routes.employee_routes')),
     path('', include('routes.attendance_routes')),
     path('', include('routes.leaveRequeast_routes')),
-    path('', include('routes.employeeReport_routes')),  
+    path('', include('routes.employeeReport_routes')),
+    path('', include('routes.admin_attendance_routes')),
+    path('', include('routes.admin_analytics_routes')),
 ]
