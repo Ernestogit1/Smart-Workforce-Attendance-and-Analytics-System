@@ -1,7 +1,8 @@
-import { AppBar, Toolbar, IconButton, Typography, Button, Avatar, Badge, Box } from '@mui/material'
+import { AppBar, Toolbar, IconButton, Typography, Button, Box, alpha, useTheme, Tooltip } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import MenuIcon from '@mui/icons-material/Menu'
-import { Notifications, Search, Brightness4 } from '@mui/icons-material'
+import { Brightness4, Brightness7 } from '@mui/icons-material'
+import { useThemeMode } from '../../../contexts/theme.context'
 
 type Props = {
   title: string
@@ -14,7 +15,12 @@ type Props = {
 const StyledAppBar = styled(AppBar, {
   shouldForwardProp: (prop) => prop !== 'isDesktopOpen' && prop !== 'drawerWidth',
 })<{ isDesktopOpen?: boolean; drawerWidth: number }>(({ theme, isDesktopOpen, drawerWidth }) => ({
-  boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+  background: theme.palette.mode === 'dark'
+    ? 'linear-gradient(90deg, #1e293b 0%, #334155 100%)'
+    : 'linear-gradient(90deg, #ffffff 0%, #f8fafc 100%)',
+  color: theme.palette.text.primary,
+  boxShadow: `0 1px 3px ${alpha(theme.palette.common.black, 0.05)}`,
+  borderBottom: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
   transition: theme.transitions.create(['margin', 'width'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
@@ -32,13 +38,14 @@ const StyledAppBar = styled(AppBar, {
 }))
 
 const ActionIcon = styled(IconButton)(({ theme }) => ({
-  backgroundColor: theme.palette.background.default,
+  backgroundColor: alpha(theme.palette.background.default, 0.6),
   borderRadius: 10,
   width: 42,
   height: 42,
-  boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
+  border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
   '&:hover': {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: alpha(theme.palette.primary.main, 0.08),
+    borderColor: alpha(theme.palette.primary.main, 0.2),
   }
 }))
 
@@ -49,6 +56,9 @@ export default function SidebarAppBar({
   isDesktopOpen,
   drawerWidth
 }: Props) {
+  const theme = useTheme()
+  const { mode, toggleTheme } = useThemeMode()
+  
   return (
     <StyledAppBar 
       position="fixed" 
@@ -58,7 +68,6 @@ export default function SidebarAppBar({
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <IconButton
-            color="inherit"
             edge="start"
             onClick={onToggleMenu}
             sx={{ mr: 2 }}
@@ -72,29 +81,18 @@ export default function SidebarAppBar({
         </Box>
         
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-          <ActionIcon color="inherit" size="small">
-            <Search fontSize="small" />
-          </ActionIcon>
-          
-          <ActionIcon color="inherit" size="small">
-            <Brightness4 fontSize="small" />
-          </ActionIcon>
-          
-          <ActionIcon color="inherit" size="small">
-            <Badge badgeContent={3} color="error">
-              <Notifications fontSize="small" />
-            </Badge>
-          </ActionIcon>
+          <Tooltip title={`Switch to ${mode === 'light' ? 'dark' : 'light'} mode`}>
+            <ActionIcon size="small" onClick={toggleTheme}>
+              {mode === 'light' ? <Brightness4 fontSize="small" /> : <Brightness7 fontSize="small" />}
+            </ActionIcon>
+          </Tooltip>
           
           <Button 
             variant="contained" 
             onClick={onLogout}
             color="secondary"
             size="small"
-            sx={{ 
-              ml: 1,
-              boxShadow: '0 4px 12px rgba(253, 140, 115, 0.2)',
-            }}
+            sx={{ ml: 1 }}
           >
             Logout
           </Button>
