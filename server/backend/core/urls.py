@@ -17,4 +17,5 @@ urlpatterns += [
     path('', include('routes.employeeReport_routes')),
     path('', include('routes.admin_attendance_routes')),
     path('', include('routes.admin_analytics_routes')),
+    path('', include('routes.admin_dashboard_routes')),  # added
 ]

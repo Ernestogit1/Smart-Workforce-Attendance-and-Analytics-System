@@ -28,6 +28,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import type { AppDispatch, RootState } from '../../../store/index.store'
 import { logoutThunk } from '../../../store/slices/auth.slice'
 import TimeInOutModal from '../modals/time-in-out.modals'
+import LogoutModal from '../modals/logout.modal' // added
 import {
   sidebarDrawerSx,
   sidebarHeaderSx,
@@ -44,20 +45,25 @@ const COLLAPSED_WIDTH = 72
 
 export default function Sidebar() {
   const dispatch = useDispatch<AppDispatch>()
-  const { user } = useSelector((s: RootState) => s.auth)
+  const { user, loading: authLoading } = useSelector((s: RootState) => s.auth) // read loading
   const [open, setOpen] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [modalType, setModalType] = useState<'timeIn' | 'timeOut'>('timeIn')
+  const [logoutOpen, setLogoutOpen] = useState(false) // added
   const navigate = useNavigate()
 
   const handleDrawerToggle = () => {
     setOpen(!open)
   }
 
-  const handleLogout = async () => {
-    if (window.confirm('Are you sure you want to logout?')) {
-      await dispatch(logoutThunk())
-    }
+  const handleLogout = () => {
+    // open confirm modal instead of window.confirm
+    setLogoutOpen(true)
+  }
+
+  const handleConfirmLogout = async () => {
+    await dispatch(logoutThunk())
+    setLogoutOpen(false)
   }
 
   const handleTimeInClick = () => {
@@ -193,12 +199,8 @@ export default function Sidebar() {
                   ...sidebarListItemSx(open),
                   '&:hover': {
                     backgroundColor: '#fee2e2',
-                    '& .MuiListItemIcon-root': {
-                      color: '#ef4444',
-                    },
-                    '& .MuiListItemText-primary': {
-                      color: '#ef4444',
-                    },
+                    '& .MuiListItemIcon-root': { color: '#ef4444' },
+                    '& .MuiListItemText-primary': { color: '#ef4444' },
                   },
                 }}
               >
@@ -229,6 +231,14 @@ export default function Sidebar() {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         type={modalType}
+      />
+
+      {/* Logout Confirm Modal */}
+      <LogoutModal
+        open={logoutOpen}
+        loading={authLoading}
+        onClose={() => setLogoutOpen(false)}
+        onConfirm={handleConfirmLogout}
       />
     </>
   )
