@@ -1,0 +1,128 @@
+Project overview
+
+    Two web apps: Admin portal (management + analytics) and Employee portal (self‑service).
+    Backend: Django REST API with Firebase Admin auth and Cloudinary for media.
+    Core domains: attendance, employees, leaves, analytics.
+1. System requirements
+    Browser: Latest Chrome/Edge/Firefox.
+    Node.js 18+ for Admin/Employee apps.
+    Python 3.10+ for server; pip; virtualenv.
+    Internet access for Firebase/Cloudinary endpoints.
+2. Getting started
+    Automatic setup Admin Account it will be save in the mongoDB if admin is not yet in the mongodb and Firebase
+        Admin Account: 
+            - email: admin@gmail.com 
+            - password: admin123
+    Obtain an admin account from IT.
+    URLs are defined by your deployment; local defaults:
+            - Admin: http://localhost:5173
+            - Employee: http://localhost:5174 
+            - API: http://127.0.0.1:8000
+    Configure environment files in each app from .env.example.
+    Get the account key from firebase and rename it into serviceAccountKey.json and put in on the directory backend/config/serviceAccountKey.josn
+3.Roles and permissions
+    Admin
+        Full access to analytics, employee CRUD, attendance monitoring, leave approvals, exports.
+    Employee
+        Time in/out, view own history, request leaves, view personal report, logout.
+4.Admin portal guide
+    Login
+        Enter email/password on Admin login screen. Protected routes will redirect if unauthenticated.
+    Navigation (sidebar)
+        Dashboard: high‑level stats.
+        Analytics: trends, breakdowns, radar, rankings; export CSV/PDF.
+        Employee Directory: searchable/sortable table; update, restrict/unrestrict.
+        Employee Account Maker: create employee users, upload photo.
+        Employee Update: edit details.
+        Leave Requests: review, approve/deny.
+        Monitor Attendance: browse/filter attendance logs.
+    Employee Directory usage
+        Search bar (debounced). Sort by header. Pagination at footer.
+        Actions: Update profile; Restrict/Unrestrict access.
+        Tip: Columns have min widths and flexible layout; horizontal scroll appears if needed.
+    Analytics
+    Insights cards, Health Score, charts (Line/Area/Bar/Pie/Radar), Employee Ranking.
+    Export CSV
+        Click Export CSV (top‑right).
+    Export PDF
+        Click Export PDF. Buttons and UI controls marked as no‑pdf are excluded automatically from the exported pages.
+    Leave requests
+        Open Leave Requests, select a row, review details, Approve or Deny.
+    Monitor attendance
+        Filter by date/employee/status, review events.
+5.Employee portal guide
+    Login
+        Use company email/password.
+    Home
+        Time In/Time Out via modal. Confirm to record event.
+    Leave Request
+        Open Leave Request button, fill dates/reason, submit. Track status in listing.
+    Attendance History
+        View daily logs, filter by date range, open row for details.
+    Employee Report
+        Personal KPIs and charts.
+    Logout
+        Sidebar → Logout modal → Confirm.
+6.Data entry rules
+    Email must be valid and unique.
+    Contact number numeric, include leading zero if applicable.
+    Birth date in valid calendar format; age is computed.
+    Photos: JPEG/PNG; uploaded to Cloudinary.
+    Attendance times follow server time zone.
+7.Reports and exports
+    Analytics CSV
+        Contains monthly trend and employee ranking sections.
+    Analytics PDF
+        Multi‑page capture of dashboard content; interactive controls (buttons/toolbars with class/data no‑pdf) are not rendered.
+    File names include timestamps.
+8. Setup and running (local)
+    Backend (server)
+    Put the outside of the backend folder
+        =================================================================
+        # Windows PowerShell
+        cd server/backend
+        python -m venv .venv
+        . .venv/Scripts/Activate.ps1
+        pip install -r ../requirements.txt
+        # Set environment values from server/.env.example → server/.env
+        python manage.py migrate
+        python manage.py runserver
+        =================================================================
+    Admin app
+        =================================================================
+        cd admin
+        npm install
+        # Set VITE_API_URL and other keys from admin/.env.example → .env
+        npm run dev
+        =================================================================
+    Employee app
+        =================================================================
+        cd employee
+        npm install
+        # Set VITE_API_URL and other keys from employee/.env.example → .env
+        npm run dev
+        =================================================================
+9.Environment configuration (high level)
+    Admin/Employee (.env)
+        VITE_API_URL: base URL of Django API.
+        Firebase public keys if used on client.
+    Server (.env)
+        DB settings (if using external DB), Cloudinary credentials, Firebase admin key path, JWT secret, CORS origins.
+10.Troubleshooting
+    Exported PDF is blank or clipped
+        Ensure the dashboard content is within the export container; try enlarging browser window. Remote images require CORS; enable useCORS in exporter (already configured).
+    Buttons appear in PDF
+        They are tagged with class/data no‑pdf and ignored by html2canvas; clear cache and retry if you still see them.
+    Table looks cramped
+        Widen the browser or use the horizontal scrollbar; min widths are enforced to avoid truncation.
+    Login fails
+        Verify credentials and server availability; check CORS and .env API URL.
+    Photos not loading
+        Confirm Cloudinary credentials and that URLs are public.
+11. Data privacy and security
+    Role‑based access control enforced in backend routes and client guards.
+    Admin actions are restricted; employees can only access their own data.
+    Use HTTPS in production; keep secrets out of client .env.
+12.Support workflow
+    Capture steps to reproduce, screenshots, and console/network logs.
+    Provide app (Admin/Employee) and page, timestamp, and user email to IT.
